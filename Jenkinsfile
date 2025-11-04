@@ -24,7 +24,7 @@ pipeline {
         stage('Build with Maven') {
             steps {
                 sh 'mvn -B -V clean package'
-                junit 'target/surefire-reports/*.xml' // Optional, if you use Surefire
+                junit allowEmptyResults: true, testResults: 'target/surefire-reports/*.xml'
             }
         }
         
