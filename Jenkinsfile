@@ -1,5 +1,6 @@
 pipeline {
     agent any
+    tools { maven 'maven-3.9.9' }
     
     environment {
         PROJECT_ID = 'amiable-mix-418317'
@@ -19,13 +20,10 @@ pipeline {
             }
         }
         
-        stage('Build') {
+        stage('Build with Maven') {
             steps {
-                echo "Building application..."
-                script {
-                    // For static website - no build needed
-                    echo "No build required for static website"
-                }
+                sh 'mvn -B -V clean package'
+                junit 'target/surefire-reports/*.xml' // Optional, if you use Surefire
             }
         }
         

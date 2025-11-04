@@ -1,13 +1,14 @@
-FROM nginx:alpine
+# Build JAR with Maven
+FROM maven:3.9.9-eclipse-temurin-21 AS build
+WORKDIR /app
+COPY pom.xml .
+RUN mvn dependency:go-offline
+COPY src ./src
+RUN mvn package
 
-# Copy nginx config to listen on 8080
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-
-# Copy your website files
-COPY . /usr/share/nginx/html
-
-# Expose port 8080
+# Production Image
+FROM eclipse-temurin:21-jre
+WORKDIR /app
+COPY --from=build /app/target/*.jar app.jar
 EXPOSE 8080
-
-# Start nginx
-CMD ["nginx", "-g", "daemon off;"]
+ENTRYPOINT ["java", "-jar", "app.jar"]
