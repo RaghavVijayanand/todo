@@ -1,6 +1,6 @@
 pipeline {
     agent any
-    tools { maven 'maven-3.9.9' }
+    tools { maven 'maven-3.6.3' }
     
     environment {
         PROJECT_ID = 'amiable-mix-418317'
